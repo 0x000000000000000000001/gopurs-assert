@@ -8,7 +8,7 @@ func AssertImpl(message string, success bool) func() {
 	}
 }
 
-func CheckThrows(fn func(any) any) func() bool {
+func CheckThrows(fn func(interface{}) interface{}) func() bool {
 	return func() bool {
 		var success bool
 		func() {
