@@ -1,25 +1,22 @@
+package Test_Assert
 
-
-func AssertImpl(message string, success bool) func() {
-	return func() {
-		if !success {
-			panic(message)
-		}
+func AssertImpl(message string, success bool, _ interface{}) interface{} {
+	if !success {
+		panic(message)
 	}
+	return nil
 }
 
-func CheckThrows(fn func(interface{}) interface{}) func() bool {
-	return func() bool {
-		var success bool
-		func() {
-			defer func() {
-				if r := recover(); r != nil {
-					success = true
-				}
-			}()
-			fn(nil)
-			success = false
+func CheckThrows(fn func(interface{}) interface{}, _ interface{}) bool {
+	var success bool
+	func() {
+		defer func() {
+			if r := recover(); r != nil {
+				success = true
+			}
 		}()
-		return success
-	}
+		fn(nil)
+		success = false
+	}()
+	return success
 }
