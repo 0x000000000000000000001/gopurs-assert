@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -e
+cd "$(dirname "$0")/.."
+
+# Remove cache for safety
+rm -rf output
+
+echo "=== Building project with spago ==="
+spago build || { echo "Spago build failed"; exit 1; }
+
+echo "=== Generating Go code with gopurs ==="
+node ../gopurs/bin/gopurs.js || exit 1
+
+echo "=== Compiling Go FFI (Dry Run) ==="
+cd output
+rm -f go.mod
+go mod init gopurs/output > /dev/null 2>&1
+go mod tidy > /dev/null 2>&1
+go build ./...
+cd ..
+
