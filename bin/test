@@ -20,3 +20,5 @@ go build ./...
 echo "Go FFI compilation succeeded!"
 cd ..
 
+echo -e "
+✅ Tests passed successfully!"
